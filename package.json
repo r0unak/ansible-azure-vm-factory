@@ -1,0 +1,23 @@
+{
+  "name": "crudsinfotech-nodeapp",
+  "version": "1.0.0",
+  "description": "Hello Airbus",
+  "main": "main.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/r0unak/pipeline"
+  },
+  "keywords": [
+    "node",
+    "docker",
+    "dockerfile"
+  ],
+  "author": "rounak.saha@outlook.com",
+  "license": "ISC",
+  "devDependencies": { "test": ">=0.6.0" }
+}
+
