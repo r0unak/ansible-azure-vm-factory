@@ -1,0 +1,53 @@
+name: Terraform Plan - Azure
+
+# Trigger on push to main or pull requests
+on:
+  push:
+    branches:
+      - main
+
+
+env:
+  # Azure and Terraform environment variables
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  TF_VAR_environment: "dev"       # Example Terraform variable
+  TF_VAR_location: "eastus"       # Example Terraform variable
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    name: Terraform Plan on Azure
+
+    steps:
+      # Step 1: Checkout repo
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.0
+
+      # Step 3: Initialize Terraform
+      - name: Terraform Init
+        run: terraform init
+
+      # Step 4: Format Terraform code
+      - name: Terraform Format
+        run: terraform fmt -check
+
+      # Step 5: Validate Terraform code
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Step 6: Plan Terraform deployment
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      # Step 7: Show Terraform plan
+      - name: Show Terraform Plan
+        run: terraform show -no-color tfplan
