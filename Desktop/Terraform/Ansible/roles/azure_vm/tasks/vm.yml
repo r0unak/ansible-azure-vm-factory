@@ -1,0 +1,41 @@
+---
+# Choose Linux or Windows specific vars
+- name: Include OS-specific vars
+  include_vars: "{{ os_vars_file }}"
+  vars:
+    os_vars_file: "{{ 'linux.yml' if os_type | lower == 'linux' else 'windows.yml' }}"
+  tags: always
+
+# Build the list of NICs
+- name: Set NIC list fact
+  ansible.builtin.set_fact:
+    vm_nics:
+      - name: "{{ nic_out.state.name }}"
+        resource_group: "{{ resource_group }}"
+
+# Create the VM with attached data disk (no public IP because we created our own NIC)
+- name: Create/Update VM
+  no_log: "{{ hide_sensitive }}"
+  azure.azcollection.azure_rm_virtualmachine:
+    resource_group: "{{ resource_group }}"
+    name: "{{ vm_name }}"
+    location: "{{ location }}"
+    vm_size: "{{ vm_size }}"
+    network_interface_names: "{{ vm_nics }}"
+    os_type: "{{ os_type }}"
+    admin_username: "{{ admin_username }}"
+    admin_password: "{{ admin_password }}"   # fetched at runtime; never stored in git
+    image: "{{ image }}"
+    managed_disk_type: "{{ managed_disk_type }}"
+    data_disks:
+      - lun: "{{ data_disk_lun | default(0) }}"
+        name: "{{ data_disk_out.state.name }}"
+        managed_disk_id: "{{ data_disk_out.state.id }}"
+        caching: "{{ data_disk_caching }}"
+        delete_option: Detach
+    # Linux/Windows specific bits
+    linux_config: "{{ linux_config | default(omit) }}"
+    # Start the VM when done
+    started: true
+    state: present
+  register: vm_out

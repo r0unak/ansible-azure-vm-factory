@@ -1,0 +1,16 @@
+---
+- name: Create NIC without public IP
+  azure.azcollection.azure_rm_networkinterface:
+    resource_group: "{{ resource_group }}"
+    name: "{{ vm_name }}-nic0"
+    virtual_network: "{{ vnet_name }}"
+    subnet_name: "{{ subnet_name }}"
+    enable_accelerated_networking: "{{ enable_accel_nic }}"
+    # Attach existing NSG if you want; otherwise omit
+    security_group: "{{ nsg_name | default(omit) }}"
+    # Key bit: NO public_ip_address_name in ip_configurations
+    ip_configurations:
+      - name: ipconfig1
+        primary: true
+    create_with_security_group: false
+  register: nic_out

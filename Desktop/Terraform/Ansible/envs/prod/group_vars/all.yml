@@ -1,0 +1,7 @@
+resource_group: rg-shared-prod
+location: westeurope
+vnet_name: vnet-shared-prod
+subnet_name: snet-apps-prod
+nsg_name: nsg-apps-prod
+key_vault_name: kv-prod-core
+key_vault_url: "https://{{ key_vault_name }}.vault.azure.net"

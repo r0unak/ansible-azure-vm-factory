@@ -1,0 +1,11 @@
+# Existing Azure infra (already created in your environment)
+resource_group: rg-shared-dev
+location: westeurope
+vnet_name: vnet-shared-dev
+subnet_name: snet-apps-dev
+nsg_name: nsg-apps-dev
+
+# Optional: central Key Vault (name only; URL is derived)
+key_vault_name: kv-dev-core
+key_vault_url: "https://{{ key_vault_name }}.vault.azure.net"
+``

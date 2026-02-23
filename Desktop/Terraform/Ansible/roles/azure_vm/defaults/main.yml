@@ -1,0 +1,11 @@
+# Shared sane defaults across Linux/Windows
+location: "{{ azure_location | default('eastus') }}"
+vm_size: Standard_D2s_v5
+managed_disk_type: Premium_LRS
+data_disk_size_gb: 128
+data_disk_caching: ReadOnly
+nsg_name: ""          # existing NSG name (optional)
+enable_accel_nic: false
+
+# Do not log secrets in the VM creation task
+hide_sensitive: true

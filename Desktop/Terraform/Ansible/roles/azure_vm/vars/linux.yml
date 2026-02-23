@@ -1,0 +1,8 @@
+os_type: Linux
+image:
+  publisher: Canonical
+  offer: UbuntuServer
+  sku: 22_04-lts
+  version: latest
+linux_config:
+  disable_password_authentication: false   # we will use username+password as requested

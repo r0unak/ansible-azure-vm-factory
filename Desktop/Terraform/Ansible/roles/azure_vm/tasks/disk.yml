@@ -1,0 +1,10 @@
+---
+- name: Create/ensure managed data disk
+  azure.azcollection.azure_rm_manageddisk:
+    resource_group: "{{ resource_group }}"
+    name: "{{ vm_name }}-data-{{ data_disk_lun | default(0) }}"
+    location: "{{ location }}"
+    disk_size_gb: "{{ data_disk_size_gb }}"
+    sku: "{{ managed_disk_type }}"
+    state: present
+  register: data_disk_out

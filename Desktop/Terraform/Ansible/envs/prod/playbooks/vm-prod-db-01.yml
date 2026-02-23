@@ -1,0 +1,21 @@
+---
+- name: Create prod DB VM (no public IP; with data disk)
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: prod-db-01
+    vm_size: Standard_D8s_v5
+    os_type: Linux
+    admin_username: dbadmin
+    admin_password: >-
+      {{ lookup('azure.azcollection.azure_keyvault_secret',
+                'prod-db-01-localadmin',
+                vault_url=key_vault_url) }}
+    data_disk_lun: 0
+    data_disk_size_gb: 512
+    managed_disk_type: Premium_LRS
+
+  roles:
+    - role: azure_vm

@@ -1,0 +1,9 @@
+---
+- name: "Create NIC for {{ vm_name }}"
+  import_tasks: nic.yml
+
+- name: "Create/Ensure managed data disk for {{ vm_name }}"
+  import_tasks: disk.yml
+
+- name: "Provision VM {{ vm_name }}"
+  import_tasks: vm.yml
